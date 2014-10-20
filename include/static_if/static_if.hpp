@@ -349,4 +349,12 @@ auto static_if(std::false_type) {
 
 /***************************************************************************/
 
+#ifdef STATIC_IF_HAS_SHORT_NAMES
+#	define $IF(pred, ...) STATIC_IF(pred, __VA_ARGS__)
+#	define $ELSE_IF(pred, ...) STATIC_ELSE_IF(pred, __VA_ARGS__)
+#	define $ELSE(...) STATIC_ELSE(__VA_ARGS__)
+#endif // STATIC_IF_HAS_SHORT_NAMES
+
+/***************************************************************************/
+
 #endif // _static_if_hpp__included_
