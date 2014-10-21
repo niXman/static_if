@@ -21,7 +21,10 @@ using namespace std::string_literals;
 		,#testname "(" BOOST_PP_STRINGIZE(__LINE__) "): \"" #var "\" should be of a type \"" #__VA_ARGS__ "\"" \
 	)
 
-#define CHECK_RESULT_VAL(testname, var, ...)
+#define CHECK_RESULT_VAL(testname, var, ...) \
+	if ( var != __VA_ARGS__ ) { \
+		throw std::runtime_error(#testname "(" BOOST_PP_STRINGIZE(__LINE__) "): bad \"" #var "\" value"); \
+	}
 
 /***************************************************************************/
 
@@ -67,11 +70,38 @@ void test01() {
 	auto r01 = STATIC_IF(userpred(some_constexpr_var)) { return '3'; } STATIC_ELSE() { return 3; };
 	CHECK_RESULT_TYPE(test01, r01, int);
 
-	auto r02 = STATIC_IF(not_userpred(some_constexpr_function())) { return 3; } STATIC_ELSE() { return '3'; };
+	auto r02 = STATIC_IF(userpred(!some_constexpr_function())) { return 3; } STATIC_ELSE() { return '3'; };
 	CHECK_RESULT_TYPE(test01, r02, char);
 
-	auto r03 = STATIC_IF(not_userpred(some_constexpr_var)) { return '3'; } STATIC_ELSE() { return 3; };
+	auto r03 = STATIC_IF(userpred(!some_constexpr_var)) { return '3'; } STATIC_ELSE() { return 3; };
 	CHECK_RESULT_TYPE(test01, r03, char);
+
+	auto r04 = STATIC_IF(not_userpred(some_constexpr_function())) { return 3; } STATIC_ELSE() { return '3'; };
+	CHECK_RESULT_TYPE(test01, r04, char);
+
+	auto r05 = STATIC_IF(not_userpred(some_constexpr_var)) { return '3'; } STATIC_ELSE() { return 3; };
+	CHECK_RESULT_TYPE(test01, r05, char);
+}
+
+/***************************************************************************/
+
+template<typename T>
+auto add(const T &l, const T &r) {
+	return STATIC_IF(is_same(T, std::string), l, r) {
+		const auto lv = std::stoi(l);
+		const auto rv = std::stoi(r);
+		return std::to_string(lv+rv);
+	} STATIC_ELSE_IF(is_same(T, int), l, r) {
+		return l+r;
+	} STATIC_ELSE() {
+		throw std::invalid_argument("T is neither \"std::string\" nor \"int\"");
+	};
+}
+
+void test02() {
+	auto r00 = add("2"s, "2"s);
+	CHECK_RESULT_TYPE(test02, r00, std::string);
+	CHECK_RESULT_VAL(test02, r00, "4"s);
 }
 
 /***************************************************************************/
@@ -79,6 +109,7 @@ void test01() {
 int main() {
 	RUN_TEST(test00);
 	RUN_TEST(test01);
+	RUN_TEST(test02);
 }
 
 /***************************************************************************/
