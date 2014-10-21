@@ -1,38 +1,84 @@
 
 #include <static_if/static_if.hpp>
 
-#include <iostream>
-#include <type_traits>
+#include <boost/preprocessor/stringize.hpp>
 
-using namespace std;
+#include <iostream>
+#include <stdexcept>
+
+using namespace std::string_literals;
+
+/***************************************************************************/
+
+#define RUN_TEST(testname) \
+	std::cout << "exec test \"" << #testname << "\"..."; \
+	testname(); \
+	std::cout << "done" << std::endl
+
+#define CHECK_RESULT_TYPE(testname, var, ...) \
+	static_assert( \
+		 std::is_same<decltype(var), __VA_ARGS__>::value \
+		,#testname "(" BOOST_PP_STRINGIZE(__LINE__) "): \"" #var "\" should be of a type \"" #__VA_ARGS__ "\"" \
+	)
+
+#define CHECK_RESULT_VAL(testname, var, ...)
+
+/***************************************************************************/
 
 template<typename T>
-auto test(const T &x) {
+auto test00(const T &x) {
 	int local;
 
 	return STATIC_IF(is_same(T, std::string), x, local) {
-		cout << "string: \"" << x << "\" of size=" << x.size() << "\t";
 		int &z = local;
 		(void)z;
-		return "string branch"s;
+		return 3;
 	} STATIC_ELSE_IF(is_same(T, int), x) {
-		cout << "integer: " << x << "\t";
 		const int &z = x;
 		(void)z;
-		return "integer branch";
+		return 3L;
 	} STATIC_ELSE(x, local) {
-		cout << "else: " << x << "\t";
 		int &z = local;
 		(void)z;
-		return 'E';
+		return '3';
 	};
-
-	const auto v = STATIC_IF(is_same(T, std::integral_constant<int, 3>)) { return 3; } STATIC_ELSE() { return 4; };
-	(void)v;
 }
+
+void test00() {
+	auto r00 = test00(1);
+	CHECK_RESULT_TYPE(test00, r00, long);
+
+	auto r01 = test00(.5);
+	CHECK_RESULT_TYPE(test00, r01, char);
+
+	auto r02 = test00("Elbereth"s);
+	CHECK_RESULT_TYPE(test00, r02, int);
+}
+
+/***************************************************************************/
+
+constexpr bool some_constexpr_function() { return true; }
+constexpr bool some_constexpr_var = false;
+
+void test01() {
+	auto r00 = STATIC_IF(userpred(some_constexpr_function())) { return 3; } STATIC_ELSE() { return '3'; };
+	CHECK_RESULT_TYPE(test01, r00, int);
+
+	auto r01 = STATIC_IF(userpred(some_constexpr_var)) { return '3'; } STATIC_ELSE() { return 3; };
+	CHECK_RESULT_TYPE(test01, r01, int);
+
+	auto r02 = STATIC_IF(not_userpred(some_constexpr_function())) { return 3; } STATIC_ELSE() { return '3'; };
+	CHECK_RESULT_TYPE(test01, r02, char);
+
+	auto r03 = STATIC_IF(not_userpred(some_constexpr_var)) { return '3'; } STATIC_ELSE() { return 3; };
+	CHECK_RESULT_TYPE(test01, r03, char);
+}
+
+/***************************************************************************/
 
 int main() {
-	cout << test(1) << endl;
-	cout << test(0.5) << endl;
-	cout << test("Elbereth"s) << endl;
+	RUN_TEST(test00);
+	RUN_TEST(test01);
 }
+
+/***************************************************************************/
