@@ -34,29 +34,33 @@ auto test00(const T &x) {
 	int local;
 
 	return STATIC_IF(is_same(T, std::string), x, local) {
+		const std::string &y = x;
 		int &z = local;
 		(void)z;
 		return 3;
 	} STATIC_ELSE_IF(is_same(T, int), x) {
 		const int &z = x;
 		(void)z;
-		return 3L;
+		return 4L;
 	} STATIC_ELSE(x, local) {
 		int &z = local;
 		(void)z;
-		return '3';
+		return '5';
 	};
 }
 
 void test00() {
 	auto r00 = test00(1);
 	CHECK_RESULT_TYPE(test00, r00, long);
+	CHECK_RESULT_VAL (test00, r00, 4);
 
 	auto r01 = test00(.5);
 	CHECK_RESULT_TYPE(test00, r01, char);
+	CHECK_RESULT_VAL (test00, r01, '5');
 
 	auto r02 = test00("Elbereth"s);
 	CHECK_RESULT_TYPE(test00, r02, int);
+	CHECK_RESULT_VAL (test00, r02, 3);
 }
 
 /***************************************************************************/
