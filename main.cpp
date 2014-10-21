@@ -94,7 +94,8 @@ auto add(const T &l, const T &r) {
 	} STATIC_ELSE_IF(is_same(T, int), l, r) {
 		return l+r;
 	} STATIC_ELSE() {
-		throw std::invalid_argument("T is neither \"std::string\" nor \"int\"");
+		throw std::invalid_argument("\"T\" is neither \"std::string\" nor \"int\"");
+		return .0;
 	};
 }
 
@@ -102,6 +103,19 @@ void test02() {
 	auto r00 = add("2"s, "2"s);
 	CHECK_RESULT_TYPE(test02, r00, std::string);
 	CHECK_RESULT_VAL(test02, r00, "4"s);
+
+	auto r01 = add(2, 2);
+	CHECK_RESULT_TYPE(test02, r01, int);
+	CHECK_RESULT_VAL(test02, r01, 4);
+
+	bool ok = false;
+	try {
+		auto r02 = add(.2, .2);
+		CHECK_RESULT_TYPE(test02, r02, double);
+	} catch (...) {
+		ok = true;
+	}
+	CHECK_RESULT_VAL(test02, ok, true);
 }
 
 /***************************************************************************/
