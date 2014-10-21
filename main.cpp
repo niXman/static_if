@@ -1,10 +1,11 @@
 
 #include <static_if/static_if.hpp>
 
-#include <boost/preprocessor/stringize.hpp>
-
 #include <iostream>
 #include <stdexcept>
+
+#define _STRINGIZE(x) #x
+#define STRINGIZE(x) _STRINGIZE(x)
 
 using namespace std::string_literals;
 
@@ -18,12 +19,12 @@ using namespace std::string_literals;
 #define CHECK_RESULT_TYPE(testname, var, ...) \
 	static_assert( \
 		 std::is_same<decltype(var), __VA_ARGS__>::value \
-		,#testname "(" BOOST_PP_STRINGIZE(__LINE__) "): \"" #var "\" should be of a type \"" #__VA_ARGS__ "\"" \
+		,#testname "(" STRINGIZE(__LINE__) "): \"" #var "\" should be of a type \"" #__VA_ARGS__ "\"" \
 	)
 
 #define CHECK_RESULT_VAL(testname, var, ...) \
 	if ( var != __VA_ARGS__ ) { \
-		throw std::runtime_error(#testname "(" BOOST_PP_STRINGIZE(__LINE__) "): bad \"" #var "\" value"); \
+		throw std::runtime_error(#testname "(" STRINGIZE(__LINE__) "): bad \"" #var "\" value"); \
 	}
 
 /***************************************************************************/
