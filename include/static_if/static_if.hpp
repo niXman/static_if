@@ -1,5 +1,5 @@
 
-// Copyright (c) 2014, Maxim Yanchenko, Evgeny Panasyuk, niXman
+// Copyright (c) 2014-2015, Maxim Yanchenko, Evgeny Panasyuk, niXman
 // All rights reserved.
 //
 // This file is part of static_if(https://github.com/niXman/static_if) project.
