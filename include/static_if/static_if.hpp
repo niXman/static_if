@@ -2,7 +2,7 @@
 // Copyright (c) 2014-2015, Maxim Yanchenko, Evgeny Panasyuk, niXman
 // All rights reserved.
 //
-// This file is part of static_if(https://github.com/niXman/static_if) project.
+// This file is part of STATIC_IF(https://github.com/niXman/static_if) project.
 //
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
@@ -29,7 +29,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Emulation of "static if" feature from D language within function body, alpha version
+// Emulation of "static if" feature from D language within function body, alpha version.
 // Original idea by Maxim Yanchenko (refer http://rsdn.ru/forum/cpp/5816278.flat.1)
 // Some improvements by Evgeny Panasyuk
 // Some improvements by niXman
@@ -55,54 +55,67 @@
 #define _STATIC_IF_GET_PROC_ARGS_is_void(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_void(...) (1, std::is_void)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_void(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_null_pointer(...) (0, std::is_null_pointer)
 #define _STATIC_IF_GET_PROC_ARGS_is_null_pointer(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_null_pointer(...) (1, std::is_null_pointer)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_null_pointer(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_integral(...) (0, std::is_integral)
 #define _STATIC_IF_GET_PROC_ARGS_is_integral(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_integral(...) (1, std::is_integral)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_integral(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_floating_point(...) (0, std::is_floating_point)
 #define _STATIC_IF_GET_PROC_ARGS_is_floating_point(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_floating_point(...) (1, std::is_floating_point)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_floating_point(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_array(...) (0, std::is_array)
 #define _STATIC_IF_GET_PROC_ARGS_is_array(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_array(...) (1, std::is_array)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_array(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_enum(...) (0, std::is_enum)
 #define _STATIC_IF_GET_PROC_ARGS_is_enum(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_enum(...) (1, std::is_enum)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_enum(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_union(...) (0, std::is_union)
 #define _STATIC_IF_GET_PROC_ARGS_is_union(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_union(...) (1, std::is_union)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_union(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_class(...) (0, std::is_class)
 #define _STATIC_IF_GET_PROC_ARGS_is_class(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_class(...) (1, std::is_class)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_class(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_function(...) (0, std::is_function)
 #define _STATIC_IF_GET_PROC_ARGS_is_function(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_function(...) (1, std::is_function)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_function(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_pointer(...) (0, std::is_pointer)
 #define _STATIC_IF_GET_PROC_ARGS_is_pointer(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_pointer(...) (1, std::is_pointer)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_pointer(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_lvalue_reference(...) (0, std::is_lvalue_reference)
 #define _STATIC_IF_GET_PROC_ARGS_is_lvalue_reference(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_lvalue_reference(...) (1, std::is_lvalue_reference)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_lvalue_reference(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_rvalue_reference(...) (0, std::is_rvalue_reference)
 #define _STATIC_IF_GET_PROC_ARGS_is_rvalue_reference(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_rvalue_reference(...) (1, std::is_rvalue_reference)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_rvalue_reference(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_member_object_pointer(...) (0, std::is_member_object_pointer)
 #define _STATIC_IF_GET_PROC_ARGS_is_member_object_pointer(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_member_object_pointer(...) (1, std::is_member_object_pointer)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_member_object_pointer(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_member_function_pointer(...) (0, std::is_member_function_pointer)
 #define _STATIC_IF_GET_PROC_ARGS_is_member_function_pointer(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_member_not_function_pointer(...) (1, std::is_member_function_pointer)
@@ -113,26 +126,32 @@
 #define _STATIC_IF_GET_PROC_ARGS_is_fundamental(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_fundamental(...) (1, std::is_fundamental)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_fundamental(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_arithmetic(...) (0, std::is_arithmetic)
 #define _STATIC_IF_GET_PROC_ARGS_is_arithmetic(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_arithmetic(...) (1, std::is_arithmetic)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_arithmetic(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_scalar(...) (0, std::is_scalar)
 #define _STATIC_IF_GET_PROC_ARGS_is_scalar(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_scalar(...) (1, std::is_scalar)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_scalar(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_object(...) (0, std::is_object)
 #define _STATIC_IF_GET_PROC_ARGS_is_object(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_object(...) (1, std::is_object)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_object(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_compound(...) (0, std::is_compound)
 #define _STATIC_IF_GET_PROC_ARGS_is_compound(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_compound(...) (1, std::is_compound)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_compound(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_reference(...) (0, std::is_reference)
 #define _STATIC_IF_GET_PROC_ARGS_is_reference(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_reference(...) (1, std::is_reference)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_reference(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_member_pointer(...) (0, std::is_member_pointer)
 #define _STATIC_IF_GET_PROC_ARGS_is_member_pointer(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_member_pointer(...) (1, std::is_member_pointer)
@@ -143,50 +162,62 @@
 #define _STATIC_IF_GET_PROC_ARGS_is_const(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_const(...) (1, std::is_const)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_const(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_volatile(...) (0, std::is_volatile)
 #define _STATIC_IF_GET_PROC_ARGS_is_volatile(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_volatile(...) (1, std::is_volatile)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_volatile(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_trivial(...) (0, std::is_trivial)
 #define _STATIC_IF_GET_PROC_ARGS_is_trivial(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_trivial(...) (1, std::is_trivial)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_trivial(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_trivially_copyable(...) (0, std::is_trivially_copyable)
 #define _STATIC_IF_GET_PROC_ARGS_is_trivially_copyable(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_trivially_copyable(...) (1, std::is_trivially_copyable)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_copyable(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_standard_layout(...) (0, std::is_standard_layout)
 #define _STATIC_IF_GET_PROC_ARGS_is_standard_layout(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_standard_layout(...) (1, std::is_standard_layout)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_standard_layout(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_pod(...) (0, std::is_pod)
 #define _STATIC_IF_GET_PROC_ARGS_is_pod(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_pod(...) (1, std::is_pod)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_pod(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_literal_type(...) (0, std::is_literal_type)
 #define _STATIC_IF_GET_PROC_ARGS_is_literal_type(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_literal_type(...) (1, std::is_literal_type)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_literal_type(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_empty(...) (0, std::is_empty)
 #define _STATIC_IF_GET_PROC_ARGS_is_empty(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_empty(...) (1, std::is_empty)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_empty(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_polymorphic(...) (0, std::is_polymorphic)
 #define _STATIC_IF_GET_PROC_ARGS_is_polymorphic(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_polymorphic(...) (1, std::is_polymorphic)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_polymorphic(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_final(...) (0, std::is_final)
 #define _STATIC_IF_GET_PROC_ARGS_is_final(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_final(...) (1, std::is_final)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_final(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_abstract(...) (0, std::is_abstract)
 #define _STATIC_IF_GET_PROC_ARGS_is_abstract(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_abstract(...) (1, std::is_abstract)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_abstract(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_signed(...) (0, std::is_signed)
 #define _STATIC_IF_GET_PROC_ARGS_is_signed(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_signed(...) (1, std::is_signed)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_signed(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_unsigned(...) (0, std::is_unsigned)
 #define _STATIC_IF_GET_PROC_ARGS_is_unsigned(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_unsigned(...) (1, std::is_unsigned)
@@ -197,98 +228,107 @@
 #define _STATIC_IF_GET_PROC_ARGS_is_constructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_constructible(...) (1, std::is_constructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_default_constructible(...) (0, std::is_default_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_default_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_default_constructible(...) (1, std::is_default_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_default_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_copy_constructible(...) (0, std::is_copy_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_copy_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_copy_constructible(...) (1, std::is_copy_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_copy_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_move_constructible(...) (0, std::is_move_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_move_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_move_constructible(...) (1, std::is_move_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_move_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_assignable(...) (0, std::is_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_assignable(...) (1, std::is_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_copy_assignable(...) (0, std::is_copy_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_copy_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_copy_assignable(...) (1, std::is_copy_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_copy_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_move_assignable(...) (0, std::is_move_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_move_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_move_assignable(...) (1, std::is_move_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_move_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_destructible(...) (0, std::is_destructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_destructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_destructible(...) (1, std::is_destructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_destructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_trivially_constructible(...) (0, std::is_trivially_constructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_trivially_constructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_trivially_constructible(...) (1, std::is_trivially_constructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_trivially_default_constructible(...) (0, std::is_trivially_default_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_trivially_default_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_default_constructible(...) (1, std::is_trivially_default_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_default_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_trivially_copy_constructible(...) (0, std::is_trivially_copy_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_trivially_copy_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_copy_constructible(...) (1, std::is_trivially_copy_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_copy_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_trivially_move_constructible(...) (0, std::is_trivially_move_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_trivially_move_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_move_constructible(...) (1, std::is_trivially_move_constructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_move_constructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_trivially_assignable(...) (0, std::is_trivially_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_trivially_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_assignable(...) (1, std::is_trivially_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_trivially_copy_assignable(...) (0, std::is_trivially_copy_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_trivially_copy_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_copy_assignable(...) (1, std::is_trivially_copy_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_copy_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_trivially_move_assignable(...) (0, std::is_trivially_move_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_trivially_move_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_move_assignable(...) (1, std::is_trivially_move_assignable)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_move_assignable(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_trivially_destructible(...) (0, std::is_trivially_destructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_trivially_destructible(...) __VA_ARGS__
-#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_destructible(...) (1, std::is_trivially_destructible)
-#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_destructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_nothrow_constructible(...) (0, std::is_nothrow_constructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_nothrow_constructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_nothrow_constructible(...) (1, std::is_nothrow_constructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_nothrow_constructible(...) __VA_ARGS__
+
+#define _STATIC_IF_GET_PROC_NAME_is_default_constructible(...) (0, std::is_default_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_default_constructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_default_constructible(...) (1, std::is_default_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_default_constructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_trivially_default_constructible(...) (0, std::is_trivially_default_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_trivially_default_constructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_default_constructible(...) (1, std::is_trivially_default_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_default_constructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_nothrow_default_constructible(...) (0, std::is_nothrow_default_constructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_nothrow_default_constructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_nothrow_default_constructible(...) (1, std::is_nothrow_default_constructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_nothrow_default_constructible(...) __VA_ARGS__
+
+#define _STATIC_IF_GET_PROC_NAME_is_copy_constructible(...) (0, std::is_copy_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_copy_constructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_copy_constructible(...) (1, std::is_copy_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_copy_constructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_trivially_copy_constructible(...) (0, std::is_trivially_copy_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_trivially_copy_constructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_copy_constructible(...) (1, std::is_trivially_copy_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_copy_constructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_nothrow_copy_constructible(...) (0, std::is_nothrow_copy_constructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_nothrow_copy_constructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_nothrow_copy_constructible(...) (1, std::is_nothrow_copy_constructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_nothrow_copy_constructible(...) __VA_ARGS__
+
+#define _STATIC_IF_GET_PROC_NAME_is_move_constructible(...) (0, std::is_move_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_move_constructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_move_constructible(...) (1, std::is_move_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_move_constructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_trivially_move_constructible(...) (0, std::is_trivially_move_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_trivially_move_constructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_move_constructible(...) (1, std::is_trivially_move_constructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_move_constructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_nothrow_move_constructible(...) (0, std::is_nothrow_move_constructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_nothrow_move_constructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_nothrow_move_constructible(...) (1, std::is_nothrow_move_constructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_nothrow_move_constructible(...) __VA_ARGS__
+
+#define _STATIC_IF_GET_PROC_NAME_is_assignable(...) (0, std::is_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_assignable(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_assignable(...) (1, std::is_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_assignable(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_trivially_assignable(...) (0, std::is_trivially_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_trivially_assignable(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_assignable(...) (1, std::is_trivially_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_assignable(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_nothrow_assignable(...) (0, std::is_nothrow_assignable)
 #define _STATIC_IF_GET_PROC_ARGS_is_nothrow_assignable(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_nothrow_assignable(...) (1, std::is_nothrow_assignable)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_nothrow_assignable(...) __VA_ARGS__
+
+#define _STATIC_IF_GET_PROC_NAME_is_copy_assignable(...) (0, std::is_copy_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_copy_assignable(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_copy_assignable(...) (1, std::is_copy_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_copy_assignable(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_trivially_copy_assignable(...) (0, std::is_trivially_copy_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_trivially_copy_assignable(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_copy_assignable(...) (1, std::is_trivially_copy_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_copy_assignable(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_nothrow_copy_assignable(...) (0, std::is_nothrow_copy_assignable)
 #define _STATIC_IF_GET_PROC_ARGS_is_nothrow_copy_assignable(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_nothrow_copy_assignable(...) (1, std::is_nothrow_copy_assignable)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_nothrow_copy_assignable(...) __VA_ARGS__
+
+#define _STATIC_IF_GET_PROC_NAME_is_move_assignable(...) (0, std::is_move_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_move_assignable(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_move_assignable(...) (1, std::is_move_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_move_assignable(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_trivially_move_assignable(...) (0, std::is_trivially_move_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_trivially_move_assignable(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_move_assignable(...) (1, std::is_trivially_move_assignable)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_move_assignable(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_nothrow_move_assignable(...) (0, std::is_nothrow_move_assignable)
 #define _STATIC_IF_GET_PROC_ARGS_is_nothrow_move_assignable(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_nothrow_move_assignable(...) (1, std::is_nothrow_move_assignable)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_nothrow_move_assignable(...) __VA_ARGS__
+
+#define _STATIC_IF_GET_PROC_NAME_is_destructible(...) (0, std::is_destructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_destructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_destructible(...) (1, std::is_destructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_destructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_trivially_destructible(...) (0, std::is_trivially_destructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_trivially_destructible(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_trivially_destructible(...) (1, std::is_trivially_destructible)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_trivially_destructible(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_nothrow_destructible(...) (0, std::is_nothrow_destructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_nothrow_destructible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_nothrow_destructible(...) (1, std::is_nothrow_destructible)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_nothrow_destructible(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_has_virtual_destructor(...) (0, std::has_virtual_destructor)
 #define _STATIC_IF_GET_PROC_ARGS_has_virtual_destructor(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_has_not_virtual_destructor(...) (1, std::has_virtual_destructor)
@@ -299,10 +339,12 @@
 #define _STATIC_IF_GET_PROC_ARGS_is_same(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_same(...) (1, std::is_same)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_same(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_base_of(...) (0, std::is_base_of)
 #define _STATIC_IF_GET_PROC_ARGS_is_base_of(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_base_of(...) (1, std::is_base_of)
 #define _STATIC_IF_GET_PROC_ARGS_is_not_base_of(...) __VA_ARGS__
+
 #define _STATIC_IF_GET_PROC_NAME_is_convertible(...) (0, std::is_convertible)
 #define _STATIC_IF_GET_PROC_ARGS_is_convertible(...) __VA_ARGS__
 #define _STATIC_IF_GET_PROC_NAME_is_not_convertible(...) (1, std::is_convertible)
@@ -413,13 +455,9 @@ struct __not: std::integral_constant<bool, !T::value>
 
 #define _STATIC_IF_TUPLE_IS_EMPTY(...) \
 	_STATIC_IF__ISEMPTY( \
-		/* test if there is just one argument, eventually an empty one */ \
 		_STATIC_IF_HAS_COMMA(__VA_ARGS__), \
-		/* test if _TRIGGER_PARENTHESIS_ together with the argument adds a comma */ \
 		_STATIC_IF_HAS_COMMA(_STATIC_IF__TRIGGER_PARENTHESIS_ __VA_ARGS__), \
-		/* test if the argument together with a parenthesis adds a comma */ \
 		_STATIC_IF_HAS_COMMA(__VA_ARGS__ (/*empty*/)), \
-		/* test if placing it between _TRIGGER_PARENTHESIS_ and the parenthesis adds a comma */ \
 		_STATIC_IF_HAS_COMMA(_STATIC_IF__TRIGGER_PARENTHESIS_ __VA_ARGS__ (/*empty*/)) \
 	)
 
