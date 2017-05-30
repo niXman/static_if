@@ -1,5 +1,5 @@
 
-// Copyright (c) 2014-2015, Maxim Yanchenko, Evgeny Panasyuk, niXman
+// Copyright (c) 2014-2017, Maxim Yanchenko, Evgeny Panasyuk, niXman
 // All rights reserved.
 //
 // This file is part of STATIC_IF(https://github.com/niXman/static_if) project.
@@ -356,6 +356,11 @@
 #define _STATIC_IF_GET_PROC_NAME_not_userpred(...) (1, ::static_if::detail::userpred)
 #define _STATIC_IF_GET_PROC_ARGS_not_userpred(...) __VA_ARGS__
 
+#define _STATIC_IF_GET_PROC_NAME_is_any_of(...) (0, ::static_if::detail::is_any_of)
+#define _STATIC_IF_GET_PROC_ARGS_is_any_of(...) __VA_ARGS__
+#define _STATIC_IF_GET_PROC_NAME_is_not_any_of(...) (1, ::static_if::detail::is_any_of)
+#define _STATIC_IF_GET_PROC_ARGS_is_not_any_of(...) __VA_ARGS__
+
 /***************************************************************************/
 
 namespace static_if {
@@ -438,6 +443,34 @@ using userpred = std::integral_constant<bool, ok>;
 
 template<typename T>
 struct __not: std::integral_constant<bool, !T::value>
+{};
+
+template<
+     typename T
+    ,typename A0
+    ,typename A1 = void
+    ,typename A2 = void
+    ,typename A3 = void
+    ,typename A4 = void
+    ,typename A5 = void
+    ,typename A6 = void
+    ,typename A7 = void
+    ,typename A8 = void
+    ,typename A9 = void
+>
+struct is_any_of: std::integral_constant<
+    bool
+    ,  std::is_same<T, A0>::value
+    || std::is_same<T, A1>::value
+    || std::is_same<T, A2>::value
+    || std::is_same<T, A3>::value
+    || std::is_same<T, A4>::value
+    || std::is_same<T, A5>::value
+    || std::is_same<T, A6>::value
+    || std::is_same<T, A7>::value
+    || std::is_same<T, A8>::value
+    || std::is_same<T, A9>::value
+>
 {};
 
 } // ns detail
