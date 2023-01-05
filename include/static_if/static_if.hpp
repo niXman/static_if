@@ -30,7 +30,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Emulation of "static if" feature from D language within function body, alpha version.
-// Original idea by Maxim Yanchenko (refer https://rsdn.ru/forum/cpp/5816278.flat.1)
+// Original idea by Maxim Yanchenko (refer https://rsdn.org/forum/cpp/5816278.flat.1)
 // Some improvements by Evgeny Panasyuk
 // Some improvements by niXman
 

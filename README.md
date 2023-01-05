@@ -24,6 +24,7 @@ Overhead:
 For the following code sample:
 ```cpp
 template<typename T>
+__attribute__ ((noinline))
 T foo(const T &v) {
     return STATIC_IF(is_same(T, int), v) {
         return v+3;
@@ -33,29 +34,27 @@ T foo(const T &v) {
 }
 
 int main(int argc, char **argv) {
-    if ( argc == 1 ) {
-        return foo(argc);
-    }
-
-    if ( argc == 2 ) {
-        const char *v = foo(argv[argc]);
-        return *v;
-    }
+    int a = foo(argc);
+    int b = *foo(argv[argc]);
+    return a + b;
 }
 ```
 the following ASM will be generated:
 ```asm
-main:
-        mov     eax, 4
-        cmp     edi, 1
-        je      .L4
-        xor     eax, eax
-        cmp     edi, 2
-        je      .L9
-.L4:
+char* foo<char*>(char* const&):
+        lea     rax, [rdi+4]
         ret
-.L9:
-        mov     rax, QWORD PTR [rsi+16]
-        movsx   eax, BYTE PTR [rax+4]
+int foo<int>(int const&):
+        lea     eax, [rdi+3]
+        ret
+main:
+        call    foo<int>(int const&)
+        movsx   rdi, edi
+        mov     rdi, QWORD PTR [rsi+rdi*8]
+        mov     edx, eax
+        call    foo<char*>(char* const&)
+        movsx   eax, BYTE PTR [rax]
+        add     eax, edx
         ret
 ```
+As you can see, there is nothing superfluous here!
