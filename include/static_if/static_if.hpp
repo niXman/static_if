@@ -1,5 +1,5 @@
 
-// Copyright (c) 2014-2017, Maxim Yanchenko, Evgeny Panasyuk, niXman
+// Copyright (c) 2014-2023, Maxim Yanchenko, Evgeny Panasyuk, niXman
 // All rights reserved.
 //
 // This file is part of STATIC_IF(https://github.com/niXman/static_if) project.
@@ -30,12 +30,12 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Emulation of "static if" feature from D language within function body, alpha version.
-// Original idea by Maxim Yanchenko (refer http://rsdn.ru/forum/cpp/5816278.flat.1)
+// Original idea by Maxim Yanchenko (refer https://rsdn.ru/forum/cpp/5816278.flat.1)
 // Some improvements by Evgeny Panasyuk
 // Some improvements by niXman
 
-#ifndef _static_if_hpp__included_
-#define _static_if_hpp__included_
+#ifndef __static_if_hpp__included_
+#define __static_if_hpp__included_
 
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/punctuation/comma_if.hpp>
@@ -373,68 +373,70 @@ struct result {
 	T value;
 
 	template<class F>
-	result &&operator*(const F&) && {
+    result &&operator*(const F&) && {
 		return std::move(*this);
 	}
 };
 
 template<typename F, bool enable>
-using enable_on_void_return = std::enable_if_t<enable == std::is_same<decltype(std::declval<F>()()), void>::value>;
+using enable_on_void_return = typename std::enable_if<
+    enable == std::is_same<decltype(std::declval<F>()()), void>::value
+>::type;
 
 template<typename F>
-auto make_result(F &&calc, enable_on_void_return<F, false>* = 0) {
-	return result<std::decay_t<decltype(calc())>>{calc()};
+constexpr auto make_result(F &&calc, enable_on_void_return<F, false>* = 0) {
+    return result<typename std::decay<decltype(calc())>::type>{calc()};
 }
 
 template<typename F>
-auto make_result(F &&calc, enable_on_void_return<F, true>* = 0) {
-	calc();
-	return result<void_type>{};
+constexpr auto make_result(F &&calc, enable_on_void_return<F, true>* = 0) {
+    calc();
+    return result<void_type>{};
 }
 
 template<typename Context>
 struct trampoline {
-	Context context;
+    Context context{};
 
-	template<class F>
-	auto operator*(F &&f) const {
+    template<class F>
+    constexpr auto operator*(F &&f) const {
 		return make_result([&]{ return context(f); });
 	}
 };
 
 struct yes {
 	template<class Context>
-	auto operator*(Context &&context) const {
-		return trampoline<std::decay_t<Context>>{std::forward<Context>(context)};
+    constexpr auto operator*(Context &&context) const {
+        return trampoline<std::decay_t<Context>>{std::forward<Context>(context)};
 	}
 };
 
 struct no {
-	auto operator*(yes) const {
+    constexpr auto operator*(yes) const {
 		return yes{};
 	}
 
-	template<class F>
-	auto operator*(const F&) const {
+    template<class F>
+    constexpr auto operator*(const F&) const {
 		return no{};
 	}
 };
 
 struct extract_result {
-	template<typename T>
-	auto operator+(result<T> &&x) const {
+    template<typename T>
+    constexpr auto operator+(result<T> &&x) const {
 		return std::move(x.value);
 	}
 
-	void operator+(result<void_type> &&) const {}
-	void operator+(const no &) const {}
+    constexpr void operator+(result<void_type> &&) const {}
+    constexpr void operator+(const no &) const {}
 };
 
-auto static_if(std::true_type) {
+constexpr auto static_if(std::true_type) {
 	return yes{};
 }
 
-auto static_if(std::false_type) {
+constexpr auto static_if(std::false_type) {
 	return no{};
 }
 
@@ -445,32 +447,22 @@ template<typename T>
 struct __not: std::integral_constant<bool, !T::value>
 {};
 
-template<
-     typename T
-    ,typename A0
-    ,typename A1 = void
-    ,typename A2 = void
-    ,typename A3 = void
-    ,typename A4 = void
-    ,typename A5 = void
-    ,typename A6 = void
-    ,typename A7 = void
-    ,typename A8 = void
-    ,typename A9 = void
->
-struct is_any_of: std::integral_constant<
-    bool
-    ,  std::is_same<T, A0>::value
-    || std::is_same<T, A1>::value
-    || std::is_same<T, A2>::value
-    || std::is_same<T, A3>::value
-    || std::is_same<T, A4>::value
-    || std::is_same<T, A5>::value
-    || std::is_same<T, A6>::value
-    || std::is_same<T, A7>::value
-    || std::is_same<T, A8>::value
-    || std::is_same<T, A9>::value
->
+template<typename T, typename ...Args>
+struct is_any_of;
+
+template<typename T>
+struct is_any_of<T>
+    :std::false_type
+{};
+
+template<typename T, typename Arg0, typename ...Args>
+struct is_any_of<T, Arg0, Args...>
+    :std::integral_constant<
+         bool
+        ,std::is_same<T, Arg0>::value
+            ? true
+            : is_any_of<T, Args...>::value
+    >
 {};
 
 } // ns detail
@@ -498,6 +490,7 @@ struct is_any_of: std::integral_constant<
 
 #define _STATIC_IF_CAPTURE_PASS(r, data, i, elem) \
 	BOOST_PP_COMMA_IF(i) elem
+
 #define _STATIC_IF_CAPTURE_PARAMS(r, data, i, elem) \
 	BOOST_PP_COMMA_IF(i) auto &elem
 
@@ -580,4 +573,4 @@ struct is_any_of: std::integral_constant<
 
 /***************************************************************************/
 
-#endif // _static_if_hpp__included_
+#endif // __static_if_hpp__included_

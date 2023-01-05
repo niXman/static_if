@@ -5,7 +5,9 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 QMAKE_CXXFLAGS += \
-	-std=c++14
+    -std=c++14 \
+    -Wall \
+    -Wextra
 
 INCLUDEPATH += \
 	include
