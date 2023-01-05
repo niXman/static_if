@@ -3,7 +3,7 @@
 static_if
 =========
 
-C++14 `static_if()` alternative implementation.
+C++14 `static_if()` alternative implementation from D language
 
 - // Emulation of "static if" feature from D language within function body, alpha version.
 - // Original idea by Maxim Yanchenko (refer https://rsdn.ru/forum/cpp/5816278.flat.1)
